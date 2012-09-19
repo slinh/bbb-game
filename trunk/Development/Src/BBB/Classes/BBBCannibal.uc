@@ -26,7 +26,6 @@ DefaultProperties
  
     Components.Add(CannibalSkeletalMesh)
     ControllerClass=class'BBB.BBBAIController'
-    InventoryManagerClass=class'BBB.BBBInventoryManager'
  
     bJumpCapable=false
     bCanJump=false

@@ -88,6 +88,7 @@ function UpdateViewTarget(out TViewTarget OutVT, float DeltaTime)
 
 										OutVT.POV.Location = Pos;
 										OutVT.POV.Rotation = Rot;
+										`log("OutVT.POV.Location"@OutVT.POV.Location@", OutVT.POV.Rotation"@OutVT.POV.Rotation);
 										break;
 
 				case 'FirstPerson'	: // Simple first person, view through viewtarget's 'eyes'
@@ -111,4 +112,5 @@ function UpdateViewTarget(out TViewTarget OutVT, float DeltaTime)
 DefaultProperties
 {
 	DefaultFOV=120.f
+	CameraStyle=SideScroller
 }
