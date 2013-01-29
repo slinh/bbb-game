@@ -1,8 +1,8 @@
-class BBBCannibal extends  UDKPawn
+class BBBCannibal extends UTPawn
     placeable;
  
  
-event PostBeginPlay()
+simulated event PostBeginPlay()
 {
     super.PostBeginPlay();
     AddDefaultInventory(); 
