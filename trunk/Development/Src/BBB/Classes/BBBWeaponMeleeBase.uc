@@ -1,14 +1,17 @@
 /**
  * Copyright 2011 BBB Game, Inc. All Rights Reserved.
  */
-class BBBWeap_MeleeBase extends UTWeapon;
-
+class BBBWeaponMeleeBase extends BBBWeapon;
+simulated event PostBeginPlay()
+{
+    super.PostBeginPlay();
+	`log("BBBWeap_MeleeBase");
+}
 defaultproperties
-
 {
 	// Weapon SkeletalMesh 3rdPersonMesh
 	Begin Object Name=PickupMesh
-		SkeletalMesh=SkeletalMesh'WP_LinkGun.Mesh.SK_WP_Linkgun_1P'
+		SkeletalMesh=none
 	End Object
 
 
@@ -23,15 +26,17 @@ defaultproperties
 	Animations=MeshSequenceA
 	End Object
 
-
 	InstantHitDamage(0)=100.0
 	InstantHitDamage(1)=100.0
 
+	WeaponFireTypes(0)=EWFT_InstantHit
+	WeaponFireTypes(1)=EWFT_InstantHit
+	FiringStatesArray(0)=WeaponFiring
+	FiringStatesArray(1)=WeaponFiring
+
 	DefaultAnimSpeed=0.9
 
-	AttachmentClass=class 'BBBAttachment_MeleeBase'
-
-		PivotTranslation=(Y=-10.0)
+	PivotTranslation=(Y=-10.0)
 
 	ShotCost(0)=0
 	ShotCost(1)=0
@@ -42,13 +47,11 @@ defaultproperties
 	MaxAmmoCount=1
 	AmmoCount=1
 
+	bMeleeWeapon=true
 	WeaponRange=20
-       
+    
 	WeaponColor=(R=255,G=255,B=0,A=255)
 	FireInterval(0)=+0.24
 	FireInterval(1)=+0.35
-	PlayerViewOffset=(X=0.0,Y=0,Z=0.0)
-	
-
-       
+	PlayerViewOffset=(X=0.0,Y=0,Z=0.0)       
 }

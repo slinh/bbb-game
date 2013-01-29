@@ -25,7 +25,7 @@ simulated event BecomeViewTarget( PlayerController PC )
 simulated function bool CalcCamera( float fDeltaTime, out vector out_CamLoc, out rotator out_CamRot, out float out_FOV )
 {
 	local float tempYaw;
-
+//`log("fDeltaTime"@fDeltaTime);
 	out_CamLoc = Location;
 	out_CamLoc.Y += CamOffsetDistance;
 	out_CamLoc.Z += 128;
@@ -51,14 +51,14 @@ simulated function bool CalcCamera( float fDeltaTime, out vector out_CamLoc, out
 	if( (Rotation.Yaw % 65535 > 16384 && Rotation.Yaw % 65535 < 49560) ||
 		(Rotation.Yaw % 65535 < -16384 && Rotation.Yaw % 65535 > -49560) )
 	{
-		tempYaw = FInterpEaseIn(14336.f, 18432.f, fDeltaTime, 0.001f);
-		`log("tempYaw1"@tempYaw);
+		tempYaw = FInterpTo(14336.f, 18432.f, fDeltaTime, 0.1f);
+		//`log("tempYaw1"@tempYaw);
 		out_CamRot.Yaw = tempYaw/*18432*/;
 	}
 	else
 	{
-		tempYaw = FInterpEaseIn(18432.f, 14336.f, fDeltaTime, 0.001f);
-		`log("tempYaw2"@tempYaw);
+		tempYaw = FInterpTo(18432.f, 14336.f, fDeltaTime, 0.1f);
+		//`log("tempYaw2"@tempYaw);
 		out_CamRot.Yaw = tempYaw/*14336.f*/;
 	}
 
@@ -96,4 +96,5 @@ simulated singular event Rotator GetBaseAimRotation()
 defaultproperties
 {
 	CamOffsetDistance=-384
+	InventoryManagerClass=class'BBB.BBBinventoryManager'
 }
