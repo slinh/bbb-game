@@ -1,4 +1,4 @@
-class BBBGame extends UTGame;
+class BBBGame extends UDKGame;
 
 // Variable which references the default pawn archetype stored within a package
 var transient BBBPawn DefaultPawnArchetype;
@@ -56,5 +56,4 @@ defaultproperties
 	DefaultPawnClass=class'BBB.BBBPawn'
 	DefaultWeaponArchetype=BBBWeaponMeleeBase'Melee.Melee'
 	PlayerControllerClass=class'BBB.BBBPlayerController'
-	MapPrefixes[0]="BBB"
 }

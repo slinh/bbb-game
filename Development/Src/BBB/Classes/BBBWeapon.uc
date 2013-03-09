@@ -1,7 +1,7 @@
 /**
  * Copyright 2011 BBB Game, Inc. All Rights Reserved.
  */
-class BBBWeapon extends UTWeapon;
+class BBBWeapon extends UDKWeapon;
 
 simulated event PostBeginPlay()
 {

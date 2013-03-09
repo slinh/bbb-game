@@ -1,4 +1,4 @@
-class BBBPlayerController extends UTPlayerController;
+class BBBPlayerController extends UDKPlayerController;
 
 state PlayerWalking
 {
