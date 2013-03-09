@@ -1,4 +1,4 @@
-class BBBCannibal extends UTPawn
+class BBBCannibal extends UDKPawn
     placeable;
  
  
