@@ -14,13 +14,7 @@ defaultproperties
 
 	WeaponFireTypes(0)=EWFT_InstantHit
 	WeaponFireTypes(1)=EWFT_InstantHit
-	FiringStatesArray(0)=WeaponFiring
-	FiringStatesArray(1)=WeaponFiring
-
-	DefaultAnimSpeed=0.9
-
-	AmmoCount=1
 
 	bMeleeWeapon=true
-	WeaponRange=20  
+	WeaponRange=20
 }

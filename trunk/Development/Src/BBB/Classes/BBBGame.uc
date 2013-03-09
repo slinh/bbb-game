@@ -45,7 +45,7 @@ event AddDefaultInventory(Pawn P)
 		if (BBBInvManager != None)
 		{
 			// Create the inventory from the archetype
-			BBBInvManager.CreateInventoryArchetype(DefaultWeaponArchetype, true);
+			BBBInvManager.CreateInventoryArchetype(DefaultWeaponArchetype, false);
 		}
 	}
 }
