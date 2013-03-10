@@ -1,8 +1,5 @@
 class BBBPawn extends UDKPawn;
 
-/** Position on Y-axis to lock camera to */
-var(Camera) float CamOffsetDistance; 
-
 /** Dynamic light environment component to help speed up lighting calculations for the pawn */
 var(Pawn) const DynamicLightEnvironmentComponent LightEnvironment;
 
@@ -15,6 +12,9 @@ var(Pawn) const float JumpHeight;
 /** Socket to use for attaching weapons */
 var(Pawn) const Name WeaponSocketName;
 
+var(Sound) const SoundCue DyingSound;
+var(Sound) const SoundCue HitSounds[3];
+
 simulated event PostBeginPlay()
 {
 	Super.PostBeginPlay();
@@ -22,13 +22,13 @@ simulated event PostBeginPlay()
 	JumpZ = JumpHeight;
 }
 
-//override to make player mesh visible by default
-simulated event BecomeViewTarget( PlayerController PC )
+simulated State Dying
 {
-	Super.BecomeViewTarget(PC);
-
-	SetMeshVisibility(true);
-	SetWeaponMeshVisibility(true);
+	simulated function BeginState(Name PreviousStateName)
+	{
+		super.BeginState(PreviousStateName);
+		LifeSpan = 2.f;
+	}
 }
 
 simulated event SetMeshVisibility(bool bVisible)
@@ -71,71 +71,6 @@ simulated event SetWeaponMeshVisibility(bool bVisible)
 	{
 		Weap.ChangeVisibility(true);
 	}
-}
-
-simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
-{
-	super.PostInitAnimTree(SkelComp);
-	if (SkelComp == Mesh)
-	{
-		LeftLegControl = SkelControlFootPlacement(Mesh.FindSkelControl(LeftFootControlName));
-		RightLegControl = SkelControlFootPlacement(Mesh.FindSkelControl(RightFootControlName));
-		//FeignDeathBlend = AnimNodeBlend(Mesh.FindAnimNode('FeignDeathBlend'));
-		//FullBodyAnimSlot = AnimNodeSlot(Mesh.FindAnimNode('FullBodySlot'));
-		//TopHalfAnimSlot = AnimNodeSlot(Mesh.FindAnimNode('TopHalfSlot'));
-
-		LeftHandIK = SkelControlLimb( mesh.FindSkelControl('LeftHandIK') );
-
-		RightHandIK = SkelControlLimb( mesh.FindSkelControl('RightHandIK') );
-
-		RootRotControl = SkelControlSingleBone( mesh.FindSkelControl('RootRot') );
-		AimNode = AnimNodeAimOffset( mesh.FindAnimNode('AimNode') );
-		GunRecoilNode = GameSkelCtrl_Recoil( mesh.FindSkelControl('GunRecoilNode') );
-		LeftRecoilNode = GameSkelCtrl_Recoil( mesh.FindSkelControl('LeftRecoilNode') );
-		RightRecoilNode = GameSkelCtrl_Recoil( mesh.FindSkelControl('RightRecoilNode') );
-
-		//DrivingNode = UTAnimBlendByDriving( mesh.FindAnimNode('DrivingNode') );
-		//VehicleNode = UTAnimBlendByVehicle( mesh.FindAnimNode('VehicleNode') );
-		//HoverboardingNode = UTAnimBlendByHoverboarding( mesh.FindAnimNode('Hoverboarding') );
-
-		FlyingDirOffset = AnimNodeAimOffset( mesh.FindAnimNode('FlyingDirOffset') );
-	}
-}
-
-simulated function bool CalcCamera( float fDeltaTime, out vector out_CamLoc, out rotator out_CamRot, out float out_FOV )
-{
-	out_CamLoc = Location;
-	out_CamLoc.Y += CamOffsetDistance;
-	out_CamLoc.Z += 128;
- 
-	out_CamRot.Pitch = 0;
-	out_CamRot.Yaw = 16384;
-	out_CamRot.Roll = 0;
-	
-	return true;
-}
- 
-simulated singular event Rotator GetBaseAimRotation()
-{
-   local rotator   POVRot;
- 
-   POVRot = Rotation;
-   if( (Rotation.Yaw % 65535 > 16384 && Rotation.Yaw % 65535 < 49560) ||
-      (Rotation.Yaw % 65535 < -16384 && Rotation.Yaw % 65535 > -49560) )
-   {
-      POVRot.Yaw = 32768;
-   }
-   else
-   {
-      POVRot.Yaw = 0;
-   }
- 
-   if( POVRot.Pitch == 0 )
-   {
-      POVRot.Pitch = RemoteViewPitch << 8;
-   }
- 
-   return POVRot;
 }
 
 /**
@@ -197,19 +132,20 @@ simulated event Vector GetWeaponStartTraceLocation(optional Weapon CurrentWeapon
 	return Super.GetWeaponStartTraceLocation(CurrentWeapon);
 }
 
+function PlayDyingSound()
+{
+	PlaySound(DyingSound);
+}
+
+function PlayHit(float Damage, Controller InstigatedBy, vector HitLocation, class<DamageType> damageType, vector Momentum, TraceHitInfo HitInfo)
+{
+	super.PlayHit(Damage, InstigatedBy, HitLocation, damageType, Momentum, HitInfo);
+	PlaySound(HitSounds[0]);
+}
+
 defaultproperties
 {
-	CamOffsetDistance=-284
 	InventoryManagerClass=class'BBB.BBBinventoryManager'
-
-	Begin Object Name=CollisionCylinder
-		CollisionRadius=+0034.000000
-		CollisionHeight=+0034.000000
-		BlockNonZeroExtent=true
-		BlockZeroExtent=true
-		BlockActors=false
-		CollideActors=true
-	End Object
 
 	Begin Object Class=DynamicLightEnvironmentComponent Name=MyLightEnvironment
 		bSynthesizeSHLight=TRUE
@@ -250,4 +186,12 @@ defaultproperties
 	End Object
 	Mesh=WPawnSkeletalMeshComponent
 	Components.Add(WPawnSkeletalMeshComponent)
+
+	WeaponSocketName="WeaponSocket"
+
+	//placeholder
+	DyingSound=SoundCue'A_Character_CorruptEnigma_Cue.Mean_Efforts.A_Effort_EnigmaMean_Death_Cue'
+	HitSounds[0]=SoundCue'A_Character_CorruptEnigma_Cue.Mean_Efforts.A_Effort_EnigmaMean_PainSmall_Cue'
+	HitSounds[1]=SoundCue'A_Character_CorruptEnigma_Cue.Mean_Efforts.A_Effort_EnigmaMean_PainMedium_Cue'
+	HitSounds[2]=SoundCue'A_Character_CorruptEnigma_Cue.Mean_Efforts.A_Effort_EnigmaMean_PainLarge_Cue'
 }
