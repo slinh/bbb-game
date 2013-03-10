@@ -52,8 +52,8 @@ event AddDefaultInventory(Pawn P)
 
 defaultproperties
 {
-	DefaultPawnArchetype=BBBPawn'Gameplay.Characters.Grolard'
-	DefaultPawnClass=class'BBB.BBBPawn'
+	DefaultPawnArchetype=BBBGrolard'Gameplay.Characters.Grolard'
+	DefaultPawnClass=class'BBB.BBBGrolard'
 	DefaultWeaponArchetype=BBBWeaponMeleeBase'Melee.Melee'
 	PlayerControllerClass=class'BBB.BBBPlayerController'
 }
