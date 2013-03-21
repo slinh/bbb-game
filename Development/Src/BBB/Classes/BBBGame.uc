@@ -55,5 +55,6 @@ defaultproperties
 	DefaultPawnArchetype=BBBGrolard'Gameplay.Characters.Grolard'
 	DefaultPawnClass=class'BBB.BBBGrolard'
 	DefaultWeaponArchetype=BBBWeaponMeleeBase'Melee.Melee'
-	PlayerControllerClass=class'BBB.BBBPlayerController'
+	PlayerControllerClass=class'BBB.BBBPlayerController'	
+	HUDType=class'BBB.BBBHUD'
 }
