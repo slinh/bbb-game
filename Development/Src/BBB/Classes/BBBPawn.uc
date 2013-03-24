@@ -12,6 +12,9 @@ var(Pawn) const float JumpHeight;
 /** Socket to use for attaching weapons */
 var(Pawn) const Name WeaponSocketName;
 
+/** List of weapons to add to the inventory */
+var(Inventory) const array<BBBWeapon> Weapons;
+
 var(Sound) const SoundCue DyingSound;
 var(Sound) const SoundCue HitSounds[3];
 
