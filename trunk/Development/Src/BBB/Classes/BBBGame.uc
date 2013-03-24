@@ -2,9 +2,6 @@ class BBBGame extends UDKGame;
 
 // Variable which references the default pawn archetype stored within a package
 var transient BBBPawn DefaultPawnArchetype;
-// Variable which references the default weapon archetype stored within a package
-var transient BBBWeapon DefaultWeaponArchetype;
-
 
 function Pawn SpawnDefaultPawnFor(Controller NewPlayer, NavigationPoint StartSpot)
 {
@@ -34,18 +31,29 @@ function Pawn SpawnDefaultPawnFor(Controller NewPlayer, NavigationPoint StartSpo
 event AddDefaultInventory(Pawn P)
 {
 	local BBBInventoryManager BBBInvManager;
-
+	local BBBPawn BBBP;
 	Super.AddDefaultInventory(P);
+ 
+	BBBP=BBBPawn(P);
+	if(BBBP == none)
+	{
+		`warn("Default pawn is not a BBBPawn");
+	}
+
+	if(BBBP.Weapons.Length == 0)
+	{
+		`warn("No weapon assigned to this pawn");
+	}
 
 	// Ensure that we have a valid default weapon archetype
-	if (DefaultWeaponArchetype != None)
+	if(BBBP.Weapons[0] != None)
 	{
 		// Get the inventory manager
 		BBBInvManager = BBBInventoryManager(P.InvManager);
-		if (BBBInvManager != None)
+		if(BBBInvManager != None)
 		{
 			// Create the inventory from the archetype
-			BBBInvManager.CreateInventoryArchetype(DefaultWeaponArchetype, false);
+			BBBInvManager.CreateInventoryArchetype(BBBP.Weapons[0], false);
 		}
 	}
 }
@@ -54,7 +62,6 @@ defaultproperties
 {
 	DefaultPawnArchetype=BBBGrolard'Gameplay.Characters.Grolard'
 	DefaultPawnClass=class'BBB.BBBGrolard'
-	DefaultWeaponArchetype=BBBWeaponMeleeBase'Melee.Melee'
 	PlayerControllerClass=class'BBB.BBBPlayerController'	
 	HUDType=class'BBB.BBBHUD'
 }
